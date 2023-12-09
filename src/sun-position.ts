@@ -7,16 +7,16 @@ import { correctionArrayHour, degreesToRadians, hd2hms, radiansToDegrees } from 
 
 var SunPosition = (function () {
     let STANDARD_MERIDIAN: number = 0;
-    let latitude: number = null;
-    let longitude: number = null;
-    let x: number = null;
-    let angleDeclination: number = null;
-    let locTime: LocTime = null;
-    let sunTime: SunTime = null;
-    let elevation: number = null;
-    let azimuth: number = null;
+    let latitude: number;
+    let longitude: number;
+    let x: number;
+    let angleDeclination: number;
+    let locTime: LocTime;
+    let sunTime: SunTime;
+    let elevation: number;
+    let azimuth: number;
     let durationDay: Array<number>;
-    let objectCurrection: CurrectionObject = null;
+    let objectCurrection: CurrectionObject;
 
     const floor = Math.floor;
     const round = Math.round;

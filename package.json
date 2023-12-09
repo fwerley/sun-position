@@ -1,6 +1,6 @@
 {
   "name": "sun-position",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Calculate the position of the sun for a specific date, time and location. Calculate sunrise and sunset",
   "main": "dist/sun-position.js",
   "module": "dist/sun-position.mjs",
