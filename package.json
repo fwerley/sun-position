@@ -1,0 +1,27 @@
+{
+  "name": "sun-position",
+  "version": "1.0.0",
+  "description": "Calculate the position of the sun for a specific date, time and location. Calculate sunrise and sunset",
+  "main": "SunPosition.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fwerley/sun-position.git"
+  },
+  "keywords": [
+    "Sun",
+    "position",
+    "sunrise",
+    "sunset",
+    "day",
+    "length"
+  ],
+  "author": "Werley Ferreira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fwerley/sun-position/issues"
+  },
+  "homepage": "https://github.com/fwerley/sun-position#readme"
+}
