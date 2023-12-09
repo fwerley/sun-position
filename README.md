@@ -23,7 +23,7 @@ import SunPosition from 'sun-postion';
 ```javascript
 const sunPosition = SunPosition;
 const coords = {
-    late: -4.56454,
+    lat: -4.56454,
     lng: -38.9172
 }
 
