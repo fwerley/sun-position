@@ -1,5 +1,6 @@
 
 type LocTime = {
+    moment: Date,
     sunrise: Date,
     sunset: Date
 }

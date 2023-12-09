@@ -78,7 +78,7 @@ let azimuth = sunPosition.getAzimuth();
     </tr>
     <tr>
         <td><code>getDurationDay()</code>
-        <td><code>Array&ltnumber&gt</code>
+        <td><code>Array</code>
         <td>Array containing the total duration of the day, with three indices, in this order: hour, minute and second
     </tr>
     <tr>

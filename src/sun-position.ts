@@ -38,7 +38,7 @@ var SunPosition = (function () {
 
     // Hour angle according to local time
     const calcAngleHour = () => {
-        let moment = sunTime.moment;
+        let moment = locTime.moment;
         // For elevation calculation, consider non-standard time
         // The user's entry time must be understood as the official time of the location, therefore, the correction must be made
         // for calculating solar time.
@@ -83,16 +83,6 @@ var SunPosition = (function () {
         let endDay = 12 + (hourDay / 2);
         let sunset = hd2hms(endDay);
 
-        // Correct values above 60 or negative values in hourly data
-        let STIC = correctionArrayHour(sunrise, { minutes: 0, seconds: 0 });
-        let STEC = correctionArrayHour(sunset, { minutes: 0, seconds: 0 });
-
-        sunTime = {
-            moment: date,
-            sunrise: new Date(date.getFullYear(), date.getMonth(), date.getDate(), STIC[0], STIC[1], STIC[2]),
-            sunset: new Date(date.getFullYear(), date.getMonth(), date.getDate(), STEC[0], STEC[1], STEC[2]),
-        }
-
         // Correction of time to the region's official time
         let currection = ((STANDARD_MERIDIAN - longitude) * 60) / 15;
         let minutes = floor(currection);
@@ -101,9 +91,21 @@ var SunPosition = (function () {
             minutes,
             seconds
         }
+        // Correct values above 60 or negative values in hourly data
+        let STIC = correctionArrayHour(sunrise, { minutes: 0, seconds: 0 });
+        let SMT = correctionArrayHour([date.getHours(), date.getMinutes(), date.getSeconds()], { minutes: -minutes, seconds: -seconds });
+        let STEC = correctionArrayHour(sunset, { minutes: 0, seconds: 0 });
+
+        sunTime = {
+            moment: new Date(date.getFullYear(), date.getMonth(), date.getDate(), SMT[0], SMT[1], SMT[2]),
+            sunrise: new Date(date.getFullYear(), date.getMonth(), date.getDate(), STIC[0], STIC[1], STIC[2]),
+            sunset: new Date(date.getFullYear(), date.getMonth(), date.getDate(), STEC[0], STEC[1], STEC[2]),
+        }
+
         STIC = correctionArrayHour(sunrise, objectCurrection);
         STEC = correctionArrayHour(sunset, objectCurrection);
         locTime = {
+            moment: date,
             sunrise: new Date(date.getFullYear(), date.getMonth(), date.getDate(), STIC[0], STIC[1], STIC[2]),
             sunset: new Date(date.getFullYear(), date.getMonth(), date.getDate(), STEC[0], STEC[1], STEC[2]),
         };
