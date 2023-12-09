@@ -1,5 +1,4 @@
 # Sun Position
----
 
 > Status: Development ⚠️
 
@@ -15,7 +14,7 @@ Developed by [@fwerley](https://github.com/fwerley) 👨🏽‍💻
 
 ### Installation and use
 ```npm
-npm i sun-postion
+npm i sun-position
 ```
 ```javascript
 import SunPosition from 'sun-postion';
@@ -95,7 +94,7 @@ let azimuth = sunPosition.getAzimuth();
         <code>{<br>
             &nbsp;sunrise: Date,<br>
             &nbsp;sunset: Date<br>
-            }</code>
+        }</code>
     </tr>
     <tr>
         <td><code>getSunTime()</code>
@@ -108,7 +107,7 @@ let azimuth = sunPosition.getAzimuth();
             &nbsp;moment: Date, // input datetime<br>
             &nbsp;sunrise: Date,<br>
             &nbsp;sunset: Date<br>
-            }</code>
+        }</code>
     </tr>
     <tr>
         <td><code>getElevation()</code>
