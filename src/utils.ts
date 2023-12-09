@@ -1,19 +1,21 @@
+import { CurrectionObject } from "./types";
+
 // Polar to Cartesian [r, theta] => [x, y]
-const p2c = pt => [pt[0] * Math.cos(pt[1]), pt[0] * Math.sin(pt[1])];
+const p2c = (pt: Array<number>): Array<number> => [pt[0] * Math.cos(pt[1]), pt[0] * Math.sin(pt[1])];
 // Cartesian to Polar [x, y] => [r, theta]
-const c2p = pt => [Math.sqrt(pt[0] ** 2 + pt[1] ** 2), Math.atan2(pt[1], pt[0])];
+const c2p = (pt: Array<number>): Array<number> => [Math.sqrt(pt[0] ** 2 + pt[1] ** 2), Math.atan2(pt[1], pt[0])];
 
 // Dregrees to Radians
-const degreesToRadians = (degrees) => {
+const degreesToRadians = (degrees: number): number => {
     return (degrees % 360) * (Math.PI / 180);
 }
 
 // Radians to Degress
-const radiansToDegrees = (radians) => {
+const radiansToDegrees = (radians: number): number => {
     return radians * (180 / Math.PI);
 }
 
-const correctionArrayHour = (array, values) => {
+const correctionArrayHour = (array: Array<number>, values: CurrectionObject): Array<number> => {
     let hour = array[0];
     let minute = array[1] + values.minutes;
     let second = array[2] + values.seconds;
@@ -40,7 +42,7 @@ const correctionArrayHour = (array, values) => {
 }
 
 // Hora decimal para hora, minuto e segundos
-const hd2hms = (hd) => {
+const hd2hms = (hd: number): Array<number> => {
     let hend = Math.floor(hd);
     let med = (hd - hend) * 60;
     let mend = Math.floor((hd - hend) * 60);

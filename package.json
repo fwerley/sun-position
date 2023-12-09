@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/fwerley/sun-position/issues"
   },
-  "homepage": "https://github.com/fwerley/sun-position#readme"
+  "homepage": "https://github.com/fwerley/sun-position#readme",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
 }
