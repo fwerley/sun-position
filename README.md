@@ -1,4 +1,4 @@
-# ![sun-position-logo](https://github.com/fwerley/sun-position/assets/54607927/b6df9a3a-e152-4df6-9070-de22f51cd24a)
+# ![sun-position-logo_resized](https://github.com/fwerley/sun-position/assets/54607927/53962a6d-999c-4a17-a78e-717d2b5ced0e)
 
 > Status: Development ⚠️
 
