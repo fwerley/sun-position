@@ -114,7 +114,9 @@ var SunPosition = (function () {
 
     const timeZoneObt = async () => {
         const result = await timeZone({ lat: latitude, lng: longitude });
-        STANDARD_MERIDIAN = (result.gmtOffset / (60 * 60)) * 15;
+        // Standard time zone meridian. If the API request fails, 
+        // set the meridian based on a multiple of 15 degrees
+        STANDARD_MERIDIAN = result.gmtOffset ? (result.gmtOffset / (60 * 60)) * 15 : round(longitude / 15) * 15;
         return {
             city: result.cityName,
             country: result.countryName,

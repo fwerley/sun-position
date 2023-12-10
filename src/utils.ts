@@ -15,12 +15,11 @@ const radiansToDegrees = (radians: number): number => {
     return radians * (180 / Math.PI);
 }
 
+// Correction of time values in the format 0 to 60
 const correctionArrayHour = (array: Array<number>, values: CurrectionObject): Array<number> => {
     let hour = array[0];
     let minute = array[1] + values.minutes;
     let second = array[2] + values.seconds;
-    // array[1] = array[1] + values.minutes;
-    // array[2] = array[2] + values.seconds;
 
     if (second >= 60) {
         minute = minute + 1;
@@ -41,7 +40,7 @@ const correctionArrayHour = (array: Array<number>, values: CurrectionObject): Ar
     return [hour, minute, second];
 }
 
-// Hora decimal para hora, minuto e segundos
+// Decimal time to hour, minute and seconds
 const hd2hms = (hd: number): Array<number> => {
     let hend = Math.floor(hd);
     let med = (hd - hend) * 60;
@@ -51,6 +50,7 @@ const hd2hms = (hd: number): Array<number> => {
     return [hend, mend, send];
 }
 
+// Request to the timezonedb api to fetch the timezone of the coordinates
 const timeZone = async (coords: Coordinates) => {
     const response = await fetch(
         `https://api.timezonedb.com/v2.1/get-time-zone?key=DEDPTQRBKPR7&format=json&by=position&lat=${coords.lat}&lng=${coords.lng}`
