@@ -2,13 +2,14 @@
 // All calculations were based on the following article
 // https://www.omnicalculator.com/physics/sun-angle
 
-import { CurrectionObject, LocTime, SunTime } from "./types";
-import { correctionArrayHour, degreesToRadians, hd2hms, radiansToDegrees } from "./utils";
+import { CurrectionObject, LocTime, SunTime, TimeZone } from "./types";
+import { correctionArrayHour, degreesToRadians, hd2hms, radiansToDegrees, timeZone } from "./utils";
 
 var SunPosition = (function () {
     let STANDARD_MERIDIAN: number = 0;
     let latitude: number;
     let longitude: number;
+    let TZ: Promise<TimeZone>;
     let x: number;
     let angleDeclination: number;
     let locTime: LocTime;
@@ -111,6 +112,19 @@ var SunPosition = (function () {
         };
     }
 
+    const timeZoneObt = async () => {
+        const result = await timeZone({ lat: latitude, lng: longitude });
+        STANDARD_MERIDIAN = (result.gmtOffset / (60 * 60)) * 15;
+        return {
+            city: result.cityName,
+            country: result.countryName,
+            countryCode: result.countryCode,
+            gmtOffset: result.gmtOffset,
+            region: result.regionName,
+            zoneName: result.zoneName
+        }
+    }
+
     const run = () => {
         angleElevation();
         angleAzimuth();
@@ -122,7 +136,7 @@ var SunPosition = (function () {
         },
         setLongitude: function (lng: number) {
             longitude = lng;
-            STANDARD_MERIDIAN = round(lng / 15) * 15;
+            TZ = timeZoneObt();
         },
         setDateTime: function (dateTime: Date) {
             calcDeclination(dateTime);
@@ -132,6 +146,7 @@ var SunPosition = (function () {
         },
         getDurationDay: () => durationDay,
         getDeclinationAngle: () => angleDeclination,
+        getTimeZone: async () => TZ,
         getLocTime: () => locTime,
         getSunTime: () => sunTime,
         getElevation: () => elevation,

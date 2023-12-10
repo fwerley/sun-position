@@ -1,4 +1,4 @@
-# Sun Position
+# ![sun-position-logo](https://github.com/fwerley/sun-position/assets/54607927/b6df9a3a-e152-4df6-9070-de22f51cd24a)
 
 > Status: Development ⚠️
 
@@ -31,6 +31,7 @@ const coords = {
 sunPosition.setLatitude(coords.lat);
 sunPosition.setLongitude(coords.lng);
 
+// June 22, 2023, at 5 pm, 52 minutes and 3 seconds
 const date = new Date(2023, 5, 22, 17, 52, 3);
 
 // Date-time object input
@@ -78,7 +79,7 @@ let azimuth = sunPosition.getAzimuth();
     </tr>
     <tr>
         <td><code>getDurationDay()</code>
-        <td><code>Array</code>
+        <td><code>Array&lt;number&gt;</code>
         <td>Array containing the total duration of the day, with three indices, in this order: hour, minute and second
     </tr>
     <tr>
@@ -88,10 +89,24 @@ let azimuth = sunPosition.getAzimuth();
             For more details <a href="https://www.pveducation.org/pvcdrom/properties-of-sunlight/declination-angle">Declination Angle</a>
     </tr>
     <tr>
+        <td><code>getTimeZone()</code>
+        <td><code>Promise&lt;TimeZone&gt;</code>
+        <td>Object containing timezone information<br>
+        <code>{<br>
+    &nbsp;countryCode: string,<br>
+    &nbsp;country: string,<br>
+    &nbsp;region: string,<br>
+    &nbsp;city: string,<br>
+    &nbsp;zoneName: string,<br>
+    &nbsp;gmtOffset: number, //The time offset in seconds based on UTC time.<br>
+        }</code>
+    </tr>
+    <tr>
         <td><code>getLocTime()</code>
         <td><code>LocTime</code>
         <td>Object containing sunrise and sunset times for local standard time.<br>
         <code>{<br>
+            &nbsp;moment: Date, //input datetime<br>
             &nbsp;sunrise: Date,<br>
             &nbsp;sunset: Date<br>
         }</code>
@@ -104,7 +119,7 @@ let azimuth = sunPosition.getAzimuth();
         No time correction to official meridian standard
         </blockquote>
         <code>{<br>
-            &nbsp;moment: Date, // input datetime<br>
+            &nbsp;moment: Date, <br>
             &nbsp;sunrise: Date,<br>
             &nbsp;sunset: Date<br>
         }</code>
@@ -125,4 +140,4 @@ let azimuth = sunPosition.getAzimuth();
 
 ### Change history
 + Public version on npm
-##### 1.0.3 - December 9, 2023
+##### 0.0.4 - December 10, 2023

@@ -15,8 +15,24 @@ type CurrectionObject = {
     seconds: number
 }
 
+type TimeZone = {
+    countryCode: string,
+    country: string,
+    region: string,
+    city: string,
+    zoneName: string,
+    gmtOffset: number,
+}
+
+type Coordinates = {
+    lat: number,
+    lng: number
+}
+
 export {
     LocTime,
     SunTime,
+    TimeZone,
+    Coordinates,
     CurrectionObject
 }

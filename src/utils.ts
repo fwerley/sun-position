@@ -1,4 +1,4 @@
-import { CurrectionObject } from "./types";
+import { Coordinates, CurrectionObject } from "./types";
 
 // Polar to Cartesian [r, theta] => [x, y]
 const p2c = (pt: Array<number>): Array<number> => [pt[0] * Math.cos(pt[1]), pt[0] * Math.sin(pt[1])];
@@ -51,10 +51,18 @@ const hd2hms = (hd: number): Array<number> => {
     return [hend, mend, send];
 }
 
+const timeZone = async (coords: Coordinates) => {
+    const response = await fetch(
+        `https://api.timezonedb.com/v2.1/get-time-zone?key=DEDPTQRBKPR7&format=json&by=position&lat=${coords.lat}&lng=${coords.lng}`
+    );
+    return await response.json();
+}
+
 export {
     p2c,
     c2p,
     hd2hms,
+    timeZone,
     degreesToRadians,
     radiansToDegrees,
     correctionArrayHour
