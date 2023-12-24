@@ -139,8 +139,8 @@ let azimuth = await sunPosition.getAzimuth();
 ---
 
 ## Change history
-+ Implementation of time correction to standard local time
-##### 0.0.5 - December 20, 2023
++ Sunrise and sunset correction
+##### 0.0.5 - December 24, 2023
 #
 + Public version on npm
 ##### 0.0.4 - December 10, 2023
