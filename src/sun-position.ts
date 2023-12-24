@@ -30,7 +30,7 @@ var SunPosition = (function () {
     const acos = Math.acos;
 
     // Calculate the angle of declination
-    const calcDeclination = () => {
+    const calcDeclination = (): void => {
         let date = dateTimeLoc;
         let dateInit = new Date(`01/01/${date.getFullYear()}`);
         let dateEnd = date;
@@ -40,17 +40,14 @@ var SunPosition = (function () {
         angleDeclination = 23.45 * sin(degreesToRadians(x));
     }
 
-    // Hour angle according to local time
+    // Hour angle according to local time in hours
     const calcAngleHour = async () => {
         let moment = (await funST()).moment;
         // For elevation calculation, consider non-standard time
         // The user's entry time must be understood as the official time of the location, therefore, the correction must be made
         // for calculating solar time.
         const time = moment.getHours() + (moment.getMinutes() / 60) + (moment.getSeconds() / (60 * 60));
-        const Eot = 9.87 * sin(degreesToRadians(2 * x)) - 7.53 * cos(degreesToRadians(x)) - 1.5 * sin(degreesToRadians(x));
-        // Outside the standard meridian, disregard the correction;
-        const solarTimeReal = time + Eot / 60;
-        return (solarTimeReal - 12) * 15;
+        return (time - 12) * 15;
     }
 
     // Elevation angle
@@ -79,7 +76,7 @@ var SunPosition = (function () {
 
     // Calculate the length of the day, sunrise and sunset in local time and in the official time of the meridian that
     // governs the spindle
-    const sunHour = () => {
+    const sunHour = (): void => {
         hourDay = (2 / 15) * radiansToDegrees(acos(-tan(degreesToRadians(latitude)) * tan(degreesToRadians(angleDeclination))));
         durationDay = hd2hms(hourDay);
 
@@ -92,13 +89,14 @@ var SunPosition = (function () {
         sunset = hd2hms(endDay);
     }
 
+    // Correction for position on the meridian in relation to local standard time.
     const currectionTime = () => {
         return new Promise<CurrectionObject>(async (resolve) => {
             // Standard time zone meridian. If the API request fails, 
             // set the meridian based on a multiple of 15 degrees
             STANDARD_MERIDIAN = (await TZ).gmtOffset ? ((await TZ).gmtOffset / (60 * 60)) * 15 : round(longitude / 15) * 15;
             // Correction of time to the region's official time
-            let currection = ((STANDARD_MERIDIAN - longitude) * 60) / 15;
+            let currection = ((STANDARD_MERIDIAN - longitude) * 4);
             let minutes = floor(currection);
             let seconds = floor((currection - minutes) * 60);
             resolve({
@@ -108,13 +106,14 @@ var SunPosition = (function () {
         })
     }
 
+    // Return function for solar time, with sunrise and sunset. Also returns the current input time corrected for solar time
     const funST = () => {
         let date = dateTimeLoc;
         return new Promise<SunTime>(async (resolve) => {
             let currection = await currectionTime();
             // Correct values above 60 or negative values in hourly data
-            let STIC = correctionArrayHour(sunrise, { minutes: 0, seconds: 0 });
             let SMT = correctionArrayHour([date.getHours(), date.getMinutes(), date.getSeconds()], { minutes: -currection.minutes, seconds: -currection.seconds });
+            let STIC = correctionArrayHour(sunrise, { minutes: 0, seconds: 0 });
             let STEC = correctionArrayHour(sunset, { minutes: 0, seconds: 0 });
             resolve({
                 moment: new Date(date.getFullYear(), date.getMonth(), date.getDate(), SMT[0], SMT[1], SMT[2]),
@@ -124,15 +123,14 @@ var SunPosition = (function () {
         })
     }
 
+    // Return function to local time, with sunrise and sunset. Also returns the current entry time
     const funLT = () => {
         let date = dateTimeLoc;
         return new Promise<LocTime>(async (resolve) => {
-            objectCurrection = await currectionTime()
+            objectCurrection = await currectionTime();
             // Correct values above 60 or negative values in hourly data
-            let STIC = correctionArrayHour(sunrise, { minutes: 0, seconds: 0 });
-            let STEC = correctionArrayHour(sunset, { minutes: 0, seconds: 0 });
-            STIC = correctionArrayHour(sunrise, objectCurrection);
-            STEC = correctionArrayHour(sunset, objectCurrection);
+            let STIC = correctionArrayHour(sunrise, objectCurrection);
+            let STEC = correctionArrayHour(sunset, objectCurrection);
             resolve({
                 moment: date,
                 sunrise: new Date(date.getFullYear(), date.getMonth(), date.getDate(), STIC[0], STIC[1], STIC[2]),
@@ -142,6 +140,7 @@ var SunPosition = (function () {
         )
     }
 
+    // Return function with local time zone data
     const timeZoneObt = async (): Promise<TimeZone> => {
         const result = await timeZone({ lat: latitude, lng: longitude });
         // Standard time zone meridian. If the API request fails, 

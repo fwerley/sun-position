@@ -38,8 +38,8 @@ const date = new Date(2023, 5, 22, 17, 52, 3);
 sunPosition.setDateTime(date);
 
 // Capturing feedback from the Sun's elevation angle and azimuth
-let elevation = sunPosition.getElevation();
-let azimuth = sunPosition.getAzimuth();
+let elevation = await sunPosition.getElevation();
+let azimuth = await sunPosition.getAzimuth();
 
 ```
 ---
@@ -103,7 +103,7 @@ let azimuth = sunPosition.getAzimuth();
     </tr>
     <tr>
         <td><code>getLocTime()</code>
-        <td><code>LocTime</code>
+        <td><code>Promise&lt;LocTime&gt;</code>
         <td>Object containing sunrise and sunset times for local standard time.<br>
         <code>{<br>
             &nbsp;moment: Date, //input datetime<br>
@@ -113,7 +113,7 @@ let azimuth = sunPosition.getAzimuth();
     </tr>
     <tr>
         <td><code>getSunTime()</code>
-        <td><code>SunTime</code>
+        <td><code>Promise&lt;SunTime&gt;</code>
         <td>Object containing sunrise and sunset.<br>
         <blockquote>⚠️Solar time<br>
         No time correction to official meridian standard
@@ -126,18 +126,21 @@ let azimuth = sunPosition.getAzimuth();
     </tr>
     <tr>
         <td><code>getElevation()</code>
-        <td><code>number</code>
+        <td><code>Promise&lt;number&gt;</code>
         <td>Elevation of the Sun in relation to the horizon, being 0° on the horizon and 90° when the Sun is positioned above the observer.
     </tr>
     <tr>
         <td><code>getAzimuth()</code>
-        <td><code>number</code>
+        <td><code>Promise&lt;number&gt;</code>
         <td>Position of the Sun considering an imaginary line that connects the observer to the Sun, projected onto the horizontal, and with reference to geographic north. The azimuth angle is increasing with reference to the geographic north and heading east.
     </tr>
 </table>
 
 ---
 
-### Change history
+## Change history
++ Implementation of time correction to standard local time
+##### 0.0.5 - December 20, 2023
+#
 + Public version on npm
 ##### 0.0.4 - December 10, 2023
