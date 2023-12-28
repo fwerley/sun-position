@@ -96,7 +96,7 @@ var SunPosition = (function () {
             // set the meridian based on a multiple of 15 degrees
             STANDARD_MERIDIAN = (await TZ).gmtOffset ? ((await TZ).gmtOffset / (60 * 60)) * 15 : round(longitude / 15) * 15;
             // Correction of time to the region's official time
-            let currection = ((STANDARD_MERIDIAN - longitude) * 4);
+            let currection = ((STANDARD_MERIDIAN - longitude) * 4) - (9.87 * sin(degreesToRadians(2 * x)) - 7.53 * cos(degreesToRadians(x)) - 1.5 * sin(degreesToRadians(x)));
             let minutes = floor(currection);
             let seconds = floor((currection - minutes) * 60);
             resolve({
