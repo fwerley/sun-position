@@ -89,16 +89,23 @@ var SunPosition = (function () {
         sunset = hd2hms(endDay);
     }
 
+    // Equation of time currenction (obliquity and ellipticity)
+    const Eot = () => {
+        let Eot = 9.87 * sin(degreesToRadians(2 * x)) - 7.53 * cos(degreesToRadians(x)) - 1.5 * sin(degreesToRadians(x));
+        return Eot;
+    }
+
     // Correction for position on the meridian in relation to local standard time.
     const currectionTime = () => {
         return new Promise<CurrectionObject>(async (resolve) => {
             // Standard time zone meridian. If the API request fails, 
             // set the meridian based on a multiple of 15 degrees
             STANDARD_MERIDIAN = (await TZ).gmtOffset ? ((await TZ).gmtOffset / (60 * 60)) * 15 : round(longitude / 15) * 15;
+
             // Correction of time to the region's official time
-            let currection = ((STANDARD_MERIDIAN - longitude) * 4) - (9.87 * sin(degreesToRadians(2 * x)) - 7.53 * cos(degreesToRadians(x)) - 1.5 * sin(degreesToRadians(x)));
-            let minutes = floor(currection);
-            let seconds = floor((currection - minutes) * 60);
+            let currection = ((STANDARD_MERIDIAN - longitude) * 4) - Eot();
+            let minutes = round(currection);
+            let seconds = round((currection - minutes) * 60);
             resolve({
                 minutes,
                 seconds
@@ -110,11 +117,16 @@ var SunPosition = (function () {
     const funST = () => {
         let date = dateTimeLoc;
         return new Promise<SunTime>(async (resolve) => {
+            // COrrection to Local meridian
             let currection = await currectionTime();
+            let eot = Eot();
             // Correct values above 60 or negative values in hourly data
             let SMT = correctionArrayHour([date.getHours(), date.getMinutes(), date.getSeconds()], { minutes: -currection.minutes, seconds: -currection.seconds });
-            let STIC = correctionArrayHour(sunrise, { minutes: 0, seconds: 0 });
-            let STEC = correctionArrayHour(sunset, { minutes: 0, seconds: 0 });
+            // Correction to Eot()
+            let minutes = -round(eot);
+            let seconds = -round((eot - minutes) * 60);
+            let STIC = correctionArrayHour(sunrise, { minutes, seconds });
+            let STEC = correctionArrayHour(sunset, { minutes, seconds });
             resolve({
                 moment: new Date(date.getFullYear(), date.getMonth(), date.getDate(), SMT[0], SMT[1], SMT[2]),
                 sunrise: new Date(date.getFullYear(), date.getMonth(), date.getDate(), STIC[0], STIC[1], STIC[2]),

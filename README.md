@@ -140,7 +140,7 @@ let azimuth = await sunPosition.getAzimuth();
 
 ## Change history
 + Addition of the equation of time for hourly correction
-##### 0.0.6 - December 24, 2023
+##### 0.0.6 - December 28, 2023
 #
 + Sunrise and sunset correction
 ##### 0.0.5 - December 24, 2023
