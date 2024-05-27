@@ -17,25 +17,33 @@ Developed by [@fwerley](https://github.com/fwerley) 👨🏽‍💻
 npm i sun-position
 ```
 ```javascript
-import SunPosition from 'sun-postion';
+import { SunPosition } from 'sun-postion';
 ```
 
 ```javascript
-const sunPosition = SunPosition;
 const coords = {
     lat: -4.56454,
     lng: -38.9172
 }
-
-//Coordinate entry
-sunPosition.setLatitude(coords.lat);
-sunPosition.setLongitude(coords.lng);
-
 // June 22, 2023, at 5 pm, 52 minutes and 3 seconds
 const date = new Date(2023, 5, 22, 17, 52, 3);
 
-// Date-time object input
-sunPosition.setDateTime(date);
+// Initialize object
+const sunPosition = new SunPosition(
+    // Latitude
+    coords.lat,
+    // Longitude
+    coords.lng,
+    // Date-time
+    date
+    );
+
+// Update coordinates
+// sunPosition.setLatitude(coords.lat);
+// sunPosition.setLongitude(coords.lng);
+
+// Update Date-time
+// sunPosition.setDateTime(date);
 
 // Capturing feedback from the Sun's elevation angle and azimuth
 let elevation = await sunPosition.getElevation();
@@ -48,7 +56,7 @@ let azimuth = await sunPosition.getAzimuth();
 ##### Input Functions
 <table>
     <tr bgColor="#aaa">
-        <th>Property
+        <th>Method
         <th>Return
         <th>Description
     </tr>
@@ -73,7 +81,7 @@ let azimuth = await sunPosition.getAzimuth();
 
 <table>
     <tr bgColor="#aaa">
-        <th>Property
+        <th>Method
         <th>Return
         <th>Description
     </tr>
@@ -139,6 +147,9 @@ let azimuth = await sunPosition.getAzimuth();
 ---
 
 ## Change history
++ Paradigm shift to support object-oriented programming.
+##### 0.1.0 - May 27, 2024
+#
 + Addition of the equation of time for hourly correction
 ##### 0.0.6 - December 28, 2023
 #
