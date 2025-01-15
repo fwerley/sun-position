@@ -147,14 +147,17 @@ let azimuth = await sunPosition.getAzimuth();
 ---
 
 ## Change history
-+ Paradigm shift to support object-oriented programming.
-##### 0.1.0 - May 27, 2024
+Removing dependency on third-party REST API.
++ ##### 0.1.1 - January 15, 2025
 #
-+ Addition of the equation of time for hourly correction
-##### 0.0.6 - December 28, 2023
+Paradigm shift to support object-oriented programming.
++ ##### 0.1.0 - May 27, 2024
 #
-+ Sunrise and sunset correction
-##### 0.0.5 - December 24, 2023
+Addition of the equation of time for hourly correction
++ ##### 0.0.6 - December 28, 2023
 #
-+ Public version on npm
-##### 0.0.4 - December 10, 2023
+Sunrise and sunset correction
++ ##### 0.0.5 - December 24, 2023
+#
+Public version on npm
++ ##### 0.0.4 - December 10, 2023
