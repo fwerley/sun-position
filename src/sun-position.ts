@@ -1,5 +1,5 @@
 import { CurrectionObject, LocTime, SunTime, TimeZone } from "./types";
-import { correctionArrayHour, degreesToRadians, hd2hms, radiansToDegrees, timeZone } from "./utils";
+import { correctionArrayHour, degreesToRadians, getOffset, hd2hms, radiansToDegrees, timeZoneName } from "./utils";
 
 export class SunPosition {
     private STANDARD_MERIDIAN: number = 0;
@@ -36,11 +36,16 @@ export class SunPosition {
 
     public setLatitude(lat: number): void {
         this.lat = lat;
+        if (this.lat !== lat) {
+            this.TZ = this.timeZoneObt();
+        }
     }
 
     public setLongitude(lng: number): void {
         this.lng = lng;
-        this.TZ = this.timeZoneObt();
+        if (this.lng !== lng) {
+            this.TZ = this.timeZoneObt();
+        }
     }
 
     public setDateTime(dateTime: Date) {
@@ -78,6 +83,7 @@ export class SunPosition {
 
     // Equation of time currenction (obliquity and ellipticity)
     private Eot(): number {
+        // Return in minutes
         let Eot = 9.87 * this.sin(degreesToRadians(2 * this.x)) - 7.53 * this.cos(degreesToRadians(this.x)) - 1.5 * this.sin(degreesToRadians(this.x));
         return Eot;
     }
@@ -88,7 +94,6 @@ export class SunPosition {
             // Standard time zone meridian. If the API request fails, 
             // set the meridian based on a multiple of 15 degrees
             this.STANDARD_MERIDIAN = (await this.TZ).gmtOffset ? ((await this.TZ).gmtOffset / (60 * 60)) * 15 : this.round(this.lng / 15) * 15;
-
             // Correction of time to the region's official time
             let currection = ((this.STANDARD_MERIDIAN - this.lng) * 4) - this.Eot();
             let minutes = this.round(currection);
@@ -186,17 +191,20 @@ export class SunPosition {
 
     // Return function with local time zone data
     private async timeZoneObt(): Promise<TimeZone> {
-        const result = await timeZone({ lat: this.lat, lng: this.lng });
+        const result = await timeZoneName({ lat: this.lat, lng: this.lng });
+        // const result = await timeZone({ lat: this.lat, lng: this.lng });
         // Standard time zone meridian. If the API request fails, 
         // set the meridian based on a multiple of 15 degrees
-        this.STANDARD_MERIDIAN = result.gmtOffset ? (result.gmtOffset / (60 * 60)) * 15 : this.round(this.lng / 15) * 15;
+        // this.STANDARD_MERIDIAN = result && result.gmtOffset ? (result.gmtOffset / (60 * 60)) * 15 : this.round(this.lng / 15) * 15;
+        // return {           
+        //     gmtOffset: result?.currentUtcOffset.seconds,
+        //     zoneName: result?.timeZone
+        // }
+        const offset = getOffset(result && result[0]);
+        this.STANDARD_MERIDIAN = offset ? (offset / (60 * 60)) * 15 : this.round(this.lng / 15) * 15;
         return {
-            city: result.cityName,
-            country: result.countryName,
-            countryCode: result.countryCode,
-            gmtOffset: result.gmtOffset,
-            region: result.regionName,
-            zoneName: result.zoneName
+            gmtOffset: offset,
+            zoneName: result && result[0],
         }
     }
 }

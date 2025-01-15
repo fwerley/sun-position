@@ -19,11 +19,9 @@
   },
   "keywords": [
     "Sun",
-    "position",
-    "sunrise",
-    "sunset",
-    "day",
-    "length"
+    "Position",
+    "Sunrise",
+    "Sunset"
   ],
   "author": "Werley Ferreira",
   "license": "ISC",
@@ -37,5 +35,8 @@
     "ts-jest": "^29.1.1",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "browser-geo-tz": "^0.1.3"
   }
 }

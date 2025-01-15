@@ -16,11 +16,7 @@ type CurrectionObject = {
 }
 
 type TimeZone = {
-    countryCode: string,
-    country: string,
-    region: string,
-    city: string,
-    zoneName: string,
+    zoneName: string | undefined,
     gmtOffset: number,
 }
 

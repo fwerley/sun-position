@@ -1,3 +1,4 @@
+import * as GeoTZ from "browser-geo-tz";
 import { Coordinates, CurrectionObject } from "./types";
 
 // Polar to Cartesian [r, theta] => [x, y]
@@ -51,18 +52,47 @@ const hd2hms = (hd: number): Array<number> => {
 }
 
 // Request to the timezonedb api to fetch the timezone of the coordinates
-const timeZone = async (coords: Coordinates) => {
-    const response = await fetch(
-        `https://api.timezonedb.com/v2.1/get-time-zone?key=DEDPTQRBKPR7&format=json&by=position&lat=${coords.lat}&lng=${coords.lng}`
-    );
-    return await response.json();
+const timeZoneName = async (coords: Coordinates) => {
+    if (coords.lat !== null && coords.lng !== null) {
+        try {
+            // const response = await fetch(                
+            //     `https://timeapi.io/api/timezone/coordinate?latitude=${coords.lat}&longitude=${coords.lng}`
+            // );
+            // return await response.json();
+        return await GeoTZ.find(coords.lat, coords.lng);
+        } catch (error) {
+            throw new Error("TimeZone name error");
+        }
+    }
 }
+
+const getOffset = (timeZone: string | undefined) => {
+    const timeZoneName = Intl.DateTimeFormat("ia", {
+        timeZoneName: "short",
+        timeZone,
+    })
+        .formatToParts()
+        .find((i) => i.type === "timeZoneName")?.value;
+    const offset = timeZoneName?.slice(3);
+    if (!offset) return 0;
+
+    const matchData = offset.match(/([+-])(\d+)(?::(\d+))?/);
+    if (!matchData) throw `cannot parse timezone name: ${timeZoneName}`;
+
+    const [, sign, hour, minute] = matchData;
+    let result = parseInt(hour) * 60 * 60;
+    if (sign === "-") result *= -1;
+    if (minute) result += parseInt(minute);
+
+    return result;
+};
 
 export {
     p2c,
     c2p,
     hd2hms,
-    timeZone,
+    getOffset,
+    timeZoneName,
     degreesToRadians,
     radiansToDegrees,
     correctionArrayHour
