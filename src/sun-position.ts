@@ -192,14 +192,6 @@ export class SunPosition {
     // Return function with local time zone data
     private async timeZoneObt(): Promise<TimeZone> {
         const result = await timeZoneName({ lat: this.lat, lng: this.lng });
-        // const result = await timeZone({ lat: this.lat, lng: this.lng });
-        // Standard time zone meridian. If the API request fails, 
-        // set the meridian based on a multiple of 15 degrees
-        // this.STANDARD_MERIDIAN = result && result.gmtOffset ? (result.gmtOffset / (60 * 60)) * 15 : this.round(this.lng / 15) * 15;
-        // return {           
-        //     gmtOffset: result?.currentUtcOffset.seconds,
-        //     zoneName: result?.timeZone
-        // }
         const offset = getOffset(result && result[0]);
         this.STANDARD_MERIDIAN = offset ? (offset / (60 * 60)) * 15 : this.round(this.lng / 15) * 15;
         return {

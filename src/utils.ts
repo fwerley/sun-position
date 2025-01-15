@@ -55,10 +55,6 @@ const hd2hms = (hd: number): Array<number> => {
 const timeZoneName = async (coords: Coordinates) => {
     if (coords.lat !== null && coords.lng !== null) {
         try {
-            // const response = await fetch(                
-            //     `https://timeapi.io/api/timezone/coordinate?latitude=${coords.lat}&longitude=${coords.lng}`
-            // );
-            // return await response.json();
         return await GeoTZ.find(coords.lat, coords.lng);
         } catch (error) {
             throw new Error("TimeZone name error");
@@ -66,6 +62,7 @@ const timeZoneName = async (coords: Coordinates) => {
     }
 }
 
+// Calculate timezone offset in seconds
 const getOffset = (timeZone: string | undefined) => {
     const timeZoneName = Intl.DateTimeFormat("ia", {
         timeZoneName: "short",
