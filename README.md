@@ -101,10 +101,6 @@ let azimuth = await sunPosition.getAzimuth();
         <td><code>Promise&lt;TimeZone&gt;</code>
         <td>Object containing timezone information<br>
         <code>{<br>
-    &nbsp;countryCode: string,<br>
-    &nbsp;country: string,<br>
-    &nbsp;region: string,<br>
-    &nbsp;city: string,<br>
     &nbsp;zoneName: string,<br>
     &nbsp;gmtOffset: number, //The time offset in seconds based on UTC time.<br>
         }</code>
