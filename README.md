@@ -1,6 +1,9 @@
 # ![sun-position-logo](https://github.com/fwerley/sun-position/assets/54607927/9d93c232-d473-466c-8309-f39e91573d15)
 
-> Status: Development ⚠️
+[![Npm package version](https://badgen.net/npm/v/sun-position)](https://npmjs.com/package/sun-position)
+
+
+[![TypeScript](https://badgen.net/badge/icon/typescript?icon=typescript&label)](https://typescriptlang.org)
 
 ### Calculate the position of the sun for a specific date, time and location. Calculate sunrise and sunset
 
@@ -8,7 +11,7 @@ Sun Position is a library under the ISC license. It aims to calculate and obtain
 
 The results of the lib returns can be checked at the following [site](https://www.omnicalculator.com/physics/sun-angle). 
 
-Developed by [@fwerley](https://github.com/fwerley) 👨🏽‍💻
+👨🏽‍💻 Developed by [@fwerley](https://github.com/fwerley) 
 
 ---
 
@@ -143,6 +146,9 @@ let azimuth = await sunPosition.getAzimuth();
 ---
 
 ## Change history
+Dynamic time zone localization.
++ ##### 0.1.2 - January 19, 2025
+#
 Removing dependency on third-party REST API.
 + ##### 0.1.1 - January 15, 2025
 #
